@@ -37,8 +37,8 @@ module ApiAuth
       end
 
       def fetch_headers
-        request.metadata[:headers] ||= {}
-        capitalize_keys request.metadata[:headers]
+        @request.metadata[:headers] ||= {}
+        capitalize_keys @request.metadata[:headers]
       end
 
       def content_type

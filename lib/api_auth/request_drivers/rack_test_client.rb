@@ -24,10 +24,10 @@ module ApiAuth
       end
 
       def populate_content_md5
-        if ['POST', 'PUT'].include?(@method)
-          @request.metadata[:headers]["Content-MD5"]=calculated_md5
-          @headers = fetch_headers
-        end
+        #if ['POST', 'PUT'].include?(@method)
+          #@request.metadata[:headers]["Content-MD5"]=calculated_md5
+          #@headers = fetch_headers
+        #end
       end
 
       def md5_mismatch?
@@ -54,7 +54,7 @@ module ApiAuth
       end
 
       def request_uri
-        @request.context.path
+        "http://example.org"+@request.context.path
       end
 
       def set_date

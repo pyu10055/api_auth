@@ -9,6 +9,7 @@ module ApiAuth
       def initialize(request)
         @request = request
         @headers = fetch_headers
+        @method = @request.metadata[:method].to_s.upcase
         true
       end
 
@@ -23,13 +24,13 @@ module ApiAuth
       end
 
       def populate_content_md5
-        if ['POST', 'PUT'].include?(method)
+        if ['POST', 'PUT'].include?(@method)
           @headers["Content-MD5"] = calculated_md5
         end
       end
 
       def md5_mismatch?
-        if ['POST', 'PUT'].include?(method)
+        if ['POST', 'PUT'].include?(@method)
           calculated_md5 != content_md5
         else
           false

@@ -54,7 +54,9 @@ module ApiAuth
       end
 
       def request_uri
-        "http://example.org"+@request.context.path
+        uri = "http://example.org"+@request.context.path        
+        uri += "?#{@request.context.query_string}" if @method == "GET" && !@request.context.query_string.blank?
+        uri
       end
 
       def set_date

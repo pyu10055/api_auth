@@ -14,8 +14,7 @@ module ApiAuth
       end
 
       def set_auth_header(header)
-        @request.env.merge!({ "Authorization" => header })
-        @headers = fetch_headers
+        @headers.merge!({ "Authorization" => header })
         @request
       end
 

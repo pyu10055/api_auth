@@ -14,7 +14,8 @@ module ApiAuth
       end
 
       def set_auth_header(header)
-        @headers.merge!({ "Authorization" => header })
+        @request.context.header "Authorization" , header
+        @headers = fetch_headers
         @request
       end
 
@@ -24,7 +25,8 @@ module ApiAuth
 
       def populate_content_md5
         if ['POST', 'PUT'].include?(@method)
-          @headers["Content-MD5"] = calculated_md5
+          @request.context.header "Content-MD5", calculated_md5
+          @headers = fetch_headers
         end
       end
 
@@ -56,7 +58,8 @@ module ApiAuth
       end
 
       def set_date
-        @headers.merge!({ "DATE" => Time.now.utc.httpdate })
+        @request.context.header "DATE", Time.now.utc.httpdate
+        @headers = fetch_headers
       end
 
       def timestamp

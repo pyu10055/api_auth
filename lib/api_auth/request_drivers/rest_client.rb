@@ -18,7 +18,7 @@ module ApiAuth
         @request = RestClient::Request.new(:url => @request.url,
                         :headers => @request.headers,
                         :method => @request.method,
-                        :payload => @request.payload)
+                        :payload => @request.payload ? @request.payload.read : nil)
 
       end
 

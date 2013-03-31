@@ -13,18 +13,16 @@ module ApiAuth
       end
 
       def set_auth_header(header)
-        @request.headers.merge!({ "Authorization" => header })
+        @request.processed_headers.merge!({ "Authorization" => header })
         @headers = fetch_headers
-        @request = RestClient::Request.new(:url => @request.url,
-                        :headers => @request.headers,
-                        :method => @request.method,
-                        :payload => @request.payload ? @request.payload.read : nil)
+        @request
 
       end
 
       def calculated_md5
         if @request.payload
           body = @request.payload.read
+          @request.payload.instance_variable_get("@stream").rewind
         else
           body = ''
         end
@@ -46,7 +44,7 @@ module ApiAuth
       end
 
       def fetch_headers
-        capitalize_keys @request.headers
+        capitalize_keys @request.processed_headers
       end
 
       def content_type
@@ -64,7 +62,7 @@ module ApiAuth
       end
 
       def set_date
-        @request.headers.merge!({ "DATE" => Time.now.utc.httpdate })
+        @request.processed_headers.merge!({ "DATE" => Time.now.utc.httpdate })
       end
 
       def timestamp

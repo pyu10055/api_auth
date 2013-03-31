@@ -15,15 +15,14 @@ module ApiAuth
       def set_auth_header(header)
         @request.headers.merge!({ "Authorization" => header })
         @headers = fetch_headers
-        @request
+        @request = RestClient::Request.new(:url => @request.url,
+                        :headers => @request.headers,
+                        :method => @request.method,
+                        :payload => @request.payload)
       end
 
       def calculated_md5
-        if @request.payload
-          body = @request.payload.read
-        else
-          body = ''
-        end
+        body = @request.payload || ''
         Digest::MD5.base64digest(body)
       end
 

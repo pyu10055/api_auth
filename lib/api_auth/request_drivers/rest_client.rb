@@ -19,10 +19,15 @@ module ApiAuth
                         :headers => @request.headers,
                         :method => @request.method,
                         :payload => @request.payload)
+
       end
 
       def calculated_md5
-        body = @request.payload || ''
+        if @request.payload
+          body = @request.payload.read
+        else
+          body = ''
+        end
         Digest::MD5.base64digest(body)
       end
 
